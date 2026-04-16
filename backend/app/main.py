@@ -4,7 +4,7 @@ from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 from app.core.config import settings
-from app.api.routes import auth
+from app.api.routes import auth, portfolios, transactions
 
 limiter = Limiter(key_func=get_remote_address, default_limits=[f"{settings.RATE_LIMIT_PER_MINUTE}/minute"])
 
@@ -22,6 +22,8 @@ app.add_middleware(
 )
 
 app.include_router(auth.router, prefix="/api/v1")
+app.include_router(portfolios.router, prefix="/api/v1")
+app.include_router(transactions.router, prefix="/api/v1")
 
 
 @app.get("/health")
